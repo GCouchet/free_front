@@ -1,6 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { makeStyles } from "@material-ui/core/styles";
 import { AppBar, Collapse, IconButton, Toolbar } from "@material-ui/core";
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import Grow from '@material-ui/core/Grow';
+import Paper from '@material-ui/core/Paper';
+import Popper from '@material-ui/core/Popper';
+import MenuItem from '@material-ui/core/MenuItem';
+import MenuList from '@material-ui/core/MenuList';
 import SortIcon from '@material-ui/icons/Sort';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { Link as Scroll } from 'react-scroll'
@@ -42,22 +48,58 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
+
 export default function Header(){
     const [checked, setChecked] = useState(false);
     const classes = useStyles();
+    const [open, setOpen] = useState(false);
+    const prevOpen = useRef(open);
+    const anchorRef = useRef(null);
 
     useEffect(() => {
         setChecked(true);
       }, []);
+    
+    const handleToggle = () => {
+        setOpen((prevOpen) => !prevOpen);
+    };
+
+    const handleClose = (event) => {
+        if (anchorRef.current && anchorRef.current.contains(event.target)) {
+            return;
+          }
+        setOpen(false);
+    };
 
     return (
         <div className={classes.root} id='header'>
             <AppBar className={classes.appbar} elevation={0}>
                 <Toolbar className={classes.appbarWrapper}>
                     <h1 className={classes.appbarTitle}>Freeride</h1>
-                    <IconButton>
-                        <SortIcon className={classes.icon}/>
+                    <IconButton onClick={handleToggle}>
+                        <SortIcon
+                            ref={anchorRef}
+                            className={classes.icon}
+                        />
                     </IconButton>
+                    <Popper open={open} anchorEl={anchorRef.current} role={undefined} transition disablePortal>
+                    {({ TransitionProps, placement }) => (
+                        <Grow
+                        {...TransitionProps}
+                        style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
+                        >
+                        <Paper className={classes.appbar}>
+                            <ClickAwayListener onClickAway={handleClose}>
+                            <MenuList autoFocusItem={open} id="menu-list-grow">
+                                <MenuItem onClick={handleClose}>Profile</MenuItem>
+                                <MenuItem onClick={handleClose}>Store</MenuItem>
+                                <MenuItem onClick={handleClose}>Login</MenuItem>
+                            </MenuList>
+                            </ClickAwayListener>
+                        </Paper>
+                        </Grow>
+                    )}
+                    </Popper>
                 </Toolbar>
             </AppBar>
             <Collapse in={checked} {...(checked ? { timeout: 1000 } : {})} collapsedHeight={37}>

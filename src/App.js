@@ -17,15 +17,7 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 function App() {
-  const [centros, setCentros] = useState([])
   const classes = useStyles()
-
-  useEffect(() => {
-    axios
-      .get("/api/v1.0/location")
-      .then((res) => setCentros(res.data))
-      .catch((err) => console.log(err))
-  },[])
 
   return (
       <main className={classes.root}>
