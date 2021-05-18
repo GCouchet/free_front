@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import {Helmet} from "react-helmet";
 import { makeStyles } from "@material-ui/core/styles";
-import { CssBaseline } from "@material-ui/core";
+import PropTypes from 'prop-types'
+// import { CssBaseline } from "@material-ui/core";
 import Header from "./components/Header.js";
-import Centros from "./components/Centros"
+//import Centros from "./components/Centros"
 
 
 const useStyles = makeStyles((theme) => ({
@@ -16,22 +16,24 @@ const useStyles = makeStyles((theme) => ({
   },   
 }))
 
-function App() {
+function App(props) {
   const classes = useStyles()
 
   return (
       <main className={classes.root}>
-        <CssBaseline>
         <Helmet>
           <title>Freeride</title>
           <meta name="description" content="Helmet application" />
         </Helmet>
         <Header/>
-        <Centros />
-        </CssBaseline>
+        {props.children}
       </main>
   );
   
 }
 
 export default App;
+
+App.propTypes = {
+  children: PropTypes.element
+}

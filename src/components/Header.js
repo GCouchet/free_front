@@ -10,13 +10,14 @@ import MenuList from '@material-ui/core/MenuList';
 import SortIcon from '@material-ui/icons/Sort';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { Link as Scroll } from 'react-scroll'
+import { Link } from 'react-router-dom';
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100vh',
+        //display: 'flex',
+        //justifyContent: 'center',
+        //alignItems: 'center',
         fontFamily: 'Courgette',
     },
     appbar: {
@@ -50,15 +51,10 @@ const useStyles = makeStyles((theme) => ({
 
 
 export default function Header(){
-    const [checked, setChecked] = useState(false);
     const classes = useStyles();
     const [open, setOpen] = useState(false);
     const prevOpen = useRef(open);
     const anchorRef = useRef(null);
-
-    useEffect(() => {
-        setChecked(true);
-      }, []);
     
     const handleToggle = () => {
         setOpen((prevOpen) => !prevOpen);
@@ -91,8 +87,8 @@ export default function Header(){
                         <Paper className={classes.appbar}>
                             <ClickAwayListener onClickAway={handleClose}>
                             <MenuList autoFocusItem={open} id="menu-list-grow">
-                                <MenuItem onClick={handleClose}>Profile</MenuItem>
-                                <MenuItem onClick={handleClose}>Store</MenuItem>
+                                <MenuItem component={Link} to={'/'} onClick={handleClose}>Profile</MenuItem>
+                                <MenuItem component={Link} to={'/store'} onClick={handleClose}>Store</MenuItem>
                                 <MenuItem onClick={handleClose}>Login</MenuItem>
                             </MenuList>
                             </ClickAwayListener>
@@ -102,18 +98,6 @@ export default function Header(){
                     </Popper>
                 </Toolbar>
             </AppBar>
-            <Collapse in={checked} {...(checked ? { timeout: 1000 } : {})} collapsedHeight={37}>
-            <div className={classes.container}>
-                <h1 className={classes.title}>
-                    Welcome to <br /> Freeride
-                </h1>
-                <Scroll to="centros" smooth={true}>
-                <IconButton>
-                    <ExpandMoreIcon className={classes.goDown}/>
-                </IconButton>
-                </Scroll>
-            </div>
-            </Collapse>
         </div>
     )
 }
