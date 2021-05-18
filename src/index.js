@@ -2,12 +2,19 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import 'bootstrap/dist/css/bootstrap.css';
 import './index.css';
-import App from './App';
+import Routes from './routes'
+import { BrowserRouter } from 'react-router-dom'
 import reportWebVitals from './reportWebVitals';
+import { CssBaseline } from "@material-ui/core";
+
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <CssBaseline>
+    <BrowserRouter>
+      <Routes />
+    </BrowserRouter>
+    </CssBaseline>
   </React.StrictMode>,
   document.getElementById('root')
 );
